@@ -6,19 +6,18 @@ import java.util.UUID;
  * Created by Guest on 3/30/16.
  */
 public class User {
-    UUID uid;
-    String name;
+    String email;
+    String provider;
 
-    public User(String name) {
-        this.uid = UUID.randomUUID();
-        this.name = name;
+    public User() {}
+
+    public User(String email) {
+        this.email = email;
     }
 
-    public UUID getUid() {
-        return uid;
-    }
-
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 }
+
+

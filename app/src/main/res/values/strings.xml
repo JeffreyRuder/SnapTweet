@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">DiscussionForum</string>
+    <string name="app_name">SnapTweet</string>
+    <string name="firebase_url">https://snaptweet.firebaseio.com</string>
+    <string name="preference_file_key">com.example.guest.discussionforum.PREFERENCE_FILE_KEY</string>
 </resources>
