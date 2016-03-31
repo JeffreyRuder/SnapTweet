@@ -7,13 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSubmitButton.setOnClickListener(this);
 
 
+
     }
 
     private void checkForAuthenticatedUser() {
@@ -88,13 +92,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupFirebaseQuery(){
-        mQuery = mFirebaseRef.child("snaptweets");
+        mQuery = mFirebaseRef.child("snaptweets").orderByChild("negativeTimeStamp");
     }
 
     private void setupRecyclerView() {
         mAdapter = new FirebaseMessageRecyclerAdapter(mQuery, SnapTweet.class);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
+
     }
 
 
@@ -107,6 +112,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.snap_switch);
+        item.setActionView(R.layout.action_bar_switch);
+        SwitchCompat actionSwitch = (SwitchCompat) item.getActionView().findViewById(R.id.switchForActionBar);
+        final TextView actionSwitchText = (TextView) item.getActionView().findViewById(R.id.switchTextView);
+
+        actionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mEditor.putBoolean("snappy", true).commit();
+                    actionSwitchText.setText(getString(R.string.snap_true));
+
+                } else {
+                    mEditor.putBoolean("snappy", false).commit();
+                    actionSwitchText.setText(getString(R.string.snap_false));
+                }
+            }
+        });
         return true;
     }
 

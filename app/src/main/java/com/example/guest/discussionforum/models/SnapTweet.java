@@ -17,7 +17,8 @@ import java.util.UUID;
  * Created by Guest on 3/30/16.
  */
 public class SnapTweet {
-    Date timeStamp;
+    long timeStamp;
+    long negativeTimeStamp;
     String content;
     String userName;
     String ref;
@@ -27,13 +28,18 @@ public class SnapTweet {
 
 
     public SnapTweet(String content, String currentUserName) {
-        this.timeStamp = new Date();
+        this.timeStamp = new Date().getTime();
+        this.negativeTimeStamp = timeStamp * -1;
         this.content = content;
         this.userName = currentUserName;
     }
 
-    public Date getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
+    }
+
+    public long getNegativeTimeStamp() {
+        return negativeTimeStamp;
     }
 
     public String getContent() {
