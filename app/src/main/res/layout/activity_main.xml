@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    android:background="@color/colorSecondaryAccent">
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/EditText"
+        android:id="@+id/contentEditText"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:lines="2"/>
@@ -16,10 +17,13 @@
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/EditText"
+        android:layout_below="@+id/contentEditText"
+        android:padding="7dp"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:id="@+id/submitButton"
-        android:text="Send Message" />
+        android:text="Send Message"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/bright_foreground_material_dark" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

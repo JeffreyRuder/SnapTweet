@@ -35,8 +35,7 @@ public class FirebaseMessageRecyclerAdapter extends FirebaseRecyclerAdapter<Mess
         holder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SnapTweet snapTweet = getItem(holder.getAdapterPosition());
-                Firebase ref = new Firebase(snapTweet.getSnapTweetId().toString());
+                Firebase ref = new Firebase(getItem(holder.getAdapterPosition()).getRef());
                 ref.removeValue();
             }
         });

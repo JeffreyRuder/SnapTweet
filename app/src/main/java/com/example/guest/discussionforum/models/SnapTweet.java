@@ -1,7 +1,14 @@
 package com.example.guest.discussionforum.models;
 
+import android.content.SharedPreferences;
+
+import com.example.guest.discussionforum.R;
 import com.example.guest.discussionforum.SnapTweetApplication;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import java.util.Date;
 import java.util.UUID;
@@ -10,20 +17,19 @@ import java.util.UUID;
  * Created by Guest on 3/30/16.
  */
 public class SnapTweet {
-    UUID messageId;
     Date timeStamp;
     String content;
     String userName;
+    String ref;
+    SharedPreferences mSharedPreferences;
 
-    public SnapTweet(String content) {
-        this.messageId = UUID.randomUUID();
+    public SnapTweet() {}
+
+
+    public SnapTweet(String content, String currentUserName) {
         this.timeStamp = new Date();
         this.content = content;
-        this.userName = getCurrentUserNameFromFirebase();
-    }
-
-    public UUID getSnapTweetId() {
-        return messageId;
+        this.userName = currentUserName;
     }
 
     public Date getTimeStamp() {
@@ -38,8 +44,18 @@ public class SnapTweet {
         return userName;
     }
 
-    public String getCurrentUserNameFromFirebase() {
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void save() {
         Firebase ref = SnapTweetApplication.getAppInstance().getFirebaseRef();
-        return ref.child("users").child(ref.getAuth().getUid()).child("email").toString();
+        Firebase snapTweetRef = ref.child("snaptweets").push();
+        this.setRef(snapTweetRef.toString());
+        snapTweetRef.setValue(this);
     }
 }

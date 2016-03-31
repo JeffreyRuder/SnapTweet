@@ -11,7 +11,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.guest.discussionforum.R;
 import com.example.guest.discussionforum.SnapTweetApplication;
@@ -28,10 +32,12 @@ import com.firebase.client.ValueEventListener;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.RecyclerView) RecyclerView mRecyclerView;
     @Bind(R.id.userTextView) TextView mUserTextView;
+    @Bind(R.id.submitButton) Button mSubmitButton;
+    @Bind(R.id.contentEditText) EditText mContentEditText;
 
     private Firebase mFirebaseRef;
     private String mCurrentUserId;
@@ -50,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mSharedPreferences = this.getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
         checkForAuthenticatedUser();
+        mSubmitButton.setOnClickListener(this);
 
 
     }
@@ -81,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupFirebaseQuery(){
-        mQuery = mFirebaseRef.child(mFirebaseRef.getAuth().getUid());
+        mQuery = mFirebaseRef.child("snaptweets");
     }
 
     private void setupRecyclerView() {
@@ -116,5 +123,19 @@ public class MainActivity extends AppCompatActivity {
     private void logout() {
         mFirebaseRef.unauth();
         goToLoginActivity();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mSubmitButton) {
+            if (mContentEditText.getText().toString().isEmpty()) {
+                mContentEditText.setError("Please enter a SnapTweet!");
+            } else {
+                String message = mContentEditText.getText().toString().trim();
+                SnapTweet snapTweet = new SnapTweet(message, mSharedPreferences.getString("email", "anonymous user"));
+                snapTweet.save();
+                mContentEditText.setText("");
+            }
+        }
     }
 }
